@@ -31,3 +31,5 @@ ios/Runner/GoogleService-Info.plist
 *.config.dart
 # Env file
 .env
+# Test coverage reports
+/coverage/
