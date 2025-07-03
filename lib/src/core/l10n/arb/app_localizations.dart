@@ -145,6 +145,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open account'**
   String get openAccount;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @enterYourRegisteredEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your registered email'**
+  String get enterYourRegisteredEmail;
+
+  /// No description provided for @emailRegisteredInBlueBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Email registered in Blue Bank'**
+  String get emailRegisteredInBlueBank;
+
+  /// No description provided for @weWillSendYouAnEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send you an email with a link to your registered email to continue the process'**
+  String get weWillSendYouAnEmail;
+
+  /// No description provided for @sendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Link'**
+  String get sendLink;
 }
 
 class _AppLocalizationsDelegate

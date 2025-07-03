@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:bluebank_app/src/features/auth/domain/entities/user.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/login_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:bluebank_app/src/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_state.dart';
@@ -12,15 +13,23 @@ class MockLoginUseCase extends Mock implements LoginUseCase {}
 
 class MockLogoutUseCase extends Mock implements LogoutUseCase {}
 
+class MockResetPasswordUseCase extends Mock implements ResetPasswordUseCase {}
+
 void main() {
   late AuthBloc authBloc;
   late MockLoginUseCase mockLoginUseCase;
   late MockLogoutUseCase mockLogoutUseCase;
+  late MockResetPasswordUseCase mockResetPasswordUseCase;
 
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
     mockLogoutUseCase = MockLogoutUseCase();
-    authBloc = AuthBloc(mockLoginUseCase, mockLogoutUseCase);
+    mockResetPasswordUseCase = MockResetPasswordUseCase();
+    authBloc = AuthBloc(
+      mockLoginUseCase,
+      mockLogoutUseCase,
+      mockResetPasswordUseCase,
+    );
   });
 
   const tEmail = 'test@test.com';
@@ -95,6 +104,41 @@ void main() {
         return authBloc;
       },
       act: (bloc) => bloc.add(const AuthEvent.logout()),
+      expect: () => [
+        const AuthState.loading(),
+        AuthState.error(message: tException.toString()),
+      ],
+    );
+  });
+
+  group('ResetPasswordEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [loading, unauthenticated] when reset password is successful',
+      build: () {
+        when(
+          () => mockResetPasswordUseCase(email: tEmail),
+        ).thenAnswer((_) async => Future.value());
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(const AuthEvent.resetPassword(email: tEmail)),
+      expect: () => [
+        const AuthState.loading(),
+        const AuthState.unauthenticated(),
+      ],
+      verify: (_) {
+        verify(() => mockResetPasswordUseCase(email: tEmail)).called(1);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [loading, error] when reset password fails',
+      build: () {
+        when(
+          () => mockResetPasswordUseCase(email: tEmail),
+        ).thenThrow(tException);
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(const AuthEvent.resetPassword(email: tEmail)),
       expect: () => [
         const AuthState.loading(),
         AuthState.error(message: tException.toString()),

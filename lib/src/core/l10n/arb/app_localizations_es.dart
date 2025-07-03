@@ -31,4 +31,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get openAccount => 'Abrir cuenta';
+
+  @override
+  String get forgotPasswordTitle => 'Olvidé mi contraseña';
+
+  @override
+  String get enterYourRegisteredEmail =>
+      'Ingresa tu correo electrónico registrado';
+
+  @override
+  String get emailRegisteredInBlueBank =>
+      'Correo electrónico registrado en Blue Bank';
+
+  @override
+  String get weWillSendYouAnEmail =>
+      'Te enviaremos un correo con un enlace a tu correo electrónico registrado para continuar con el proceso';
+
+  @override
+  String get sendLink => 'Enviar Enlace';
 }

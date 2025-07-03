@@ -5,6 +5,7 @@ import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<UserModel> login({required String email, required String password});
   Future<void> logout();
+  Future<void> resetPassword({required String email});
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -32,5 +33,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     await _supabaseClient.auth.signOut();
+  }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    await _supabaseClient.auth.resetPasswordForEmail(email);
   }
 }

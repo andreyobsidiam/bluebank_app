@@ -3,8 +3,10 @@ import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         Expanded(
           flex: 1,
           child: Container(
-            color: const Color(0xFF0077C0),
+            color: const Color(0xFF2A3A8A),
             child: Center(child: Image.asset('assets/logo.png', height: 100)),
           ),
         ),
@@ -152,7 +154,14 @@ class __LoginFormState extends State<_LoginForm> {
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                if (kIsWeb) {
+                  context.go('/forgot-password');
+                } else {
+                  // For mobile, use the context to navigate
+                  context.push('/forgot-password');
+                }
+              },
               child: Text(l10n.forgotPassword),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
+import 'package:bluebank_app/src/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
 import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,10 @@ class AppRouter {
       ),
       GoRoute(path: '/', builder: (context, state) => const PostPage()),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/forgot-password',
+        builder: (context, state) => const ForgotPasswordPage(),
+      ),
     ],
     initialLocation: '/welcome',
     redirect: (context, state) {
@@ -22,7 +27,8 @@ class AppRouter {
       final bool loggedIn = session != null;
       final bool onAuthFlow =
           state.matchedLocation == '/login' ||
-          state.matchedLocation == '/welcome';
+          state.matchedLocation == '/welcome' ||
+          state.matchedLocation == '/forgot-password';
 
       if (!loggedIn) {
         return onAuthFlow ? null : '/welcome';

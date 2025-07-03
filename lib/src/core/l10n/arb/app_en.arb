@@ -7,5 +7,10 @@
     "forgotPassword": "I forgot the password",
     "rememberWithFaceId": "Remember with face ID",
     "signIn": "Sign In",
-    "openAccount": "Open account"
+    "openAccount": "Open account",
+    "forgotPasswordTitle": "Forgot password",
+    "enterYourRegisteredEmail": "Enter your registered email",
+    "emailRegisteredInBlueBank": "Email registered in Blue Bank",
+    "weWillSendYouAnEmail": "We will send you an email with a link to your registered email to continue the process",
+    "sendLink": "Send Link"
 }

@@ -22,6 +22,8 @@ import '../../features/auth/data/repositories/auth_repository_impl.dart'
 import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
 import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
+import '../../features/auth/domain/usecases/reset_password_usecase.dart'
+    as _i474;
 import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i797;
 import '../../features/localization/data/datasources/language_local_data_source.dart'
     as _i178;
@@ -70,6 +72,9 @@ Future<_i174.GetIt> $initGetIt(
   gh.lazySingleton<_i297.PostRemoteDataSource>(
     () => _i297.PostRemoteDataSourceImpl(gh<_i357.ApiClient>()),
   );
+  gh.factory<_i474.ResetPasswordUseCase>(
+    () => _i474.ResetPasswordUseCase(gh<_i787.AuthRepository>()),
+  );
   gh.lazySingleton<_i1031.LanguageRepository>(
     () => _i48.LanguageRepositoryImpl(gh<_i178.LanguageLocalDataSource>()),
   );
@@ -82,14 +87,18 @@ Future<_i174.GetIt> $initGetIt(
   gh.factory<_i48.LogoutUseCase>(
     () => _i48.LogoutUseCase(gh<_i787.AuthRepository>()),
   );
+  gh.factory<_i797.AuthBloc>(
+    () => _i797.AuthBloc(
+      gh<_i188.LoginUseCase>(),
+      gh<_i48.LogoutUseCase>(),
+      gh<_i474.ResetPasswordUseCase>(),
+    ),
+  );
   gh.lazySingleton<_i472.GetPosts>(
     () => _i472.GetPosts(gh<_i786.PostRepository>()),
   );
   gh.factory<_i459.LocalizationBloc>(
     () => _i459.LocalizationBloc(gh<_i1031.LanguageRepository>()),
-  );
-  gh.factory<_i797.AuthBloc>(
-    () => _i797.AuthBloc(gh<_i188.LoginUseCase>(), gh<_i48.LogoutUseCase>()),
   );
   gh.factory<_i896.PostBloc>(() => _i896.PostBloc(gh<_i472.GetPosts>()));
   return getIt;

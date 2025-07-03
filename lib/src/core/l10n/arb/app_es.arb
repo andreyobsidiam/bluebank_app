@@ -7,5 +7,10 @@
     "forgotPassword": "Olvidé la contraseña",
     "rememberWithFaceId": "Recordar con Face ID",
     "signIn": "Iniciar Sesión",
-    "openAccount": "Abrir cuenta"
+    "openAccount": "Abrir cuenta",
+    "forgotPasswordTitle": "Olvidé mi contraseña",
+    "enterYourRegisteredEmail": "Ingresa tu correo electrónico registrado",
+    "emailRegisteredInBlueBank": "Correo electrónico registrado en Blue Bank",
+    "weWillSendYouAnEmail": "Te enviaremos un correo con un enlace a tu correo electrónico registrado para continuar con el proceso",
+    "sendLink": "Enviar Enlace"
 }
