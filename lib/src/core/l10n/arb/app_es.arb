@@ -1,0 +1,6 @@
+{
+    "@@locale": "es",
+    "loginButton": "Iniciar Sesión",
+    "emailHint": "Correo Electrónico",
+    "passwordHint": "Contraseña"
+}

@@ -1,0 +1,25 @@
+# Archivos de Dart y Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Archivos de IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Archivos misceláneos
+*.swp
+*~
+.DS_Store
+
+# Archivos sensibles y de configuración local
+android/key.properties
+android/local.properties
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+*.jks
+*.keystore
