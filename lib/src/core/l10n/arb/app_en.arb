@@ -2,5 +2,10 @@
     "@@locale": "en",
     "loginButton": "Login",
     "emailHint": "Email",
-    "passwordHint": "Password"
+    "passwordHint": "Password",
+    "goodAfternoon": "Good Afternoon",
+    "forgotPassword": "I forgot the password",
+    "rememberWithFaceId": "Remember with face ID",
+    "signIn": "Sign In",
+    "openAccount": "Open account"
 }

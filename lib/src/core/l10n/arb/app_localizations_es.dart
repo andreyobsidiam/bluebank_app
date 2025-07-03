@@ -16,4 +16,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get passwordHint => 'Contraseña';
+
+  @override
+  String get goodAfternoon => 'Buenas Tardes';
+
+  @override
+  String get forgotPassword => 'Olvidé la contraseña';
+
+  @override
+  String get rememberWithFaceId => 'Recordar con Face ID';
+
+  @override
+  String get signIn => 'Iniciar Sesión';
+
+  @override
+  String get openAccount => 'Abrir cuenta';
 }

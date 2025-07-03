@@ -115,6 +115,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password'**
   String get passwordHint;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Afternoon'**
+  String get goodAfternoon;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'I forgot the password'**
+  String get forgotPassword;
+
+  /// No description provided for @rememberWithFaceId.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember with face ID'**
+  String get rememberWithFaceId;
+
+  /// No description provided for @signIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// No description provided for @openAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Open account'**
+  String get openAccount;
 }
 
 class _AppLocalizationsDelegate

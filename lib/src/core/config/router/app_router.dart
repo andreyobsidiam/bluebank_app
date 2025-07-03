@@ -1,26 +1,34 @@
 import 'dart:async';
+import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
+import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
 import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppRouter {
   static final router = GoRouter(
     routes: [
+      GoRoute(
+        path: '/welcome',
+        builder: (context, state) => const LanguageSelectionPage(),
+      ),
       GoRoute(path: '/', builder: (context, state) => const PostPage()),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
     ],
+    initialLocation: '/welcome',
     redirect: (context, state) {
       final session = Supabase.instance.client.auth.currentSession;
       final bool loggedIn = session != null;
-      final bool loggingIn = state.matchedLocation == '/login';
+      final bool onAuthFlow =
+          state.matchedLocation == '/login' ||
+          state.matchedLocation == '/welcome';
 
       if (!loggedIn) {
-        return '/login';
+        return onAuthFlow ? null : '/welcome';
       }
 
-      if (loggingIn) {
+      if (onAuthFlow) {
         return '/';
       }
 

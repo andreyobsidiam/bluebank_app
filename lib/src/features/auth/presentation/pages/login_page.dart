@@ -1,4 +1,5 @@
 import 'package:bluebank_app/src/core/di/injector.dart';
+import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_state.dart';
@@ -114,27 +115,28 @@ class __LoginFormState extends State<_LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Good Afternoon',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            l10n.goodAfternoon,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 30),
           TextField(
             controller: _emailController,
-            decoration: const InputDecoration(labelText: 'Email o logon'),
+            decoration: InputDecoration(labelText: l10n.emailHint),
           ),
           const SizedBox(height: 20),
           TextField(
             controller: _passwordController,
             obscureText: !_isPasswordVisible,
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: l10n.passwordHint,
               suffixIcon: IconButton(
                 icon: Icon(
                   _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -151,7 +153,7 @@ class __LoginFormState extends State<_LoginForm> {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {},
-              child: const Text('I forgot the password'),
+              child: Text(l10n.forgotPassword),
             ),
           ),
           const SizedBox(height: 20),
@@ -159,7 +161,7 @@ class __LoginFormState extends State<_LoginForm> {
             children: [
               const Icon(Icons.face_outlined),
               const SizedBox(width: 10),
-              const Text('Remember with face ID'),
+              Text(l10n.rememberWithFaceId),
               const Spacer(),
               Switch(
                 value: _rememberWithFaceId,
@@ -192,9 +194,9 @@ class __LoginFormState extends State<_LoginForm> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  child: Text(
+                    l10n.signIn,
+                    style: const TextStyle(color: Colors.black, fontSize: 18),
                   ),
                 ),
               );
@@ -203,9 +205,9 @@ class __LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 20),
           TextButton(
             onPressed: () {},
-            child: const Text(
-              'Open account',
-              style: TextStyle(color: Colors.black, fontSize: 16),
+            child: Text(
+              l10n.openAccount,
+              style: const TextStyle(color: Colors.black, fontSize: 16),
             ),
           ),
         ],

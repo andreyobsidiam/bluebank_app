@@ -2,5 +2,10 @@
     "@@locale": "es",
     "loginButton": "Iniciar Sesión",
     "emailHint": "Correo Electrónico",
-    "passwordHint": "Contraseña"
+    "passwordHint": "Contraseña",
+    "goodAfternoon": "Buenas Tardes",
+    "forgotPassword": "Olvidé la contraseña",
+    "rememberWithFaceId": "Recordar con Face ID",
+    "signIn": "Iniciar Sesión",
+    "openAccount": "Abrir cuenta"
 }

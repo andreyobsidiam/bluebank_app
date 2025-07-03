@@ -1,6 +1,7 @@
 import 'package:bluebank_app/src/core/config/supabase/supabase_config.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:bluebank_app/src/features/localization/presentation/bloc/localization_bloc.dart';
 import 'package:bluebank_app/src/features/post/presentation/bloc/post_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
@@ -22,19 +23,33 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<LocalizationBloc>()
+                ..add(const LocalizationEvent.loadLanguage()),
+        ),
         BlocProvider(create: (context) => getIt<AuthBloc>()),
         BlocProvider(create: (context) => getIt<PostBloc>()),
       ],
-      child: MaterialApp.router(
-        title: 'Bluebank',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
-        ),
-        routerConfig: AppRouter.router,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('en', 'US'),
+      child: BlocBuilder<LocalizationBloc, LocalizationState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: 'Bluebank',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              textTheme: GoogleFonts.poppinsTextTheme(
+                Theme.of(context).textTheme,
+              ),
+            ),
+            routerConfig: AppRouter.router,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: state.when(
+              initial: () => const Locale('en'),
+              loaded: (locale) => locale,
+            ),
+          );
+        },
       ),
     );
   }
