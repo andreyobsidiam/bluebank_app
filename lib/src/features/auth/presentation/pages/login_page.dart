@@ -1,4 +1,5 @@
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
+import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -21,7 +22,15 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(hintText: l10n.passwordHint),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: () {}, child: Text(l10n.loginButton)),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PostPage()),
+                );
+              },
+              child: Text(l10n.loginButton),
+            ),
           ],
         ),
       ),

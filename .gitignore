@@ -23,3 +23,9 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 *.jks
 *.keystore
+
+
+# Archivos generados
+*.g.dart
+*.freezed.dart
+*.config.dart
