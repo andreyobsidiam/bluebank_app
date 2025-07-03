@@ -1,3 +1,5 @@
+import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bluebank_app/src/features/post/presentation/bloc/post_bloc.dart';
@@ -19,7 +21,17 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Posts')),
+      appBar: AppBar(
+        title: const Text('Posts'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              context.read<AuthBloc>().add(const AuthEvent.logout());
+            },
+          ),
+        ],
+      ),
       body: BlocBuilder<PostBloc, PostState>(
         builder: (context, state) {
           if (state is PostLoading) {
