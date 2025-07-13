@@ -2,6 +2,7 @@
     "@@locale": "en",
     "loginButton": "Login",
     "emailHint": "Email",
+    "emailOrLogon": "Email or Logon",
     "passwordHint": "Password",
     "goodAfternoon": "Good Afternoon",
     "forgotPassword": "I forgot the password",

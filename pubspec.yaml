@@ -70,6 +70,7 @@ dev_dependencies:
   retrofit_generator: ^9.2.0
   mocktail: ^1.0.4
   bloc_test: ^10.0.0
+  flutter_gen_runner: ^5.10.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -113,3 +114,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_gen:
+  output: lib/gen/ # Directorio de salida para el código generado
+  line_length: 80 # Opcional
+
+  integrations:
+    flutter_svg: true

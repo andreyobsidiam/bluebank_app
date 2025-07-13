@@ -1,5 +1,7 @@
+import 'package:bluebank_app/gen/assets.gen.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
+import 'package:bluebank_app/src/ds/atom/box.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_state.dart';
@@ -82,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Expanded(
               flex: 2,
-              child: Center(child: Image.asset('assets/logo.png', height: 100)),
+              child: Center(child: Assets.logo.image(height: 100)),
             ),
             Expanded(
               flex: 8,
@@ -131,7 +133,7 @@ class __LoginFormState extends State<_LoginForm> {
           const SizedBox(height: 30),
           TextField(
             controller: _emailController,
-            decoration: InputDecoration(labelText: l10n.emailHint),
+            decoration: InputDecoration(labelText: l10n.emailOrLogon),
           ),
           const SizedBox(height: 20),
           TextField(
@@ -141,7 +143,9 @@ class __LoginFormState extends State<_LoginForm> {
               labelText: l10n.passwordHint,
               suffixIcon: IconButton(
                 icon: Icon(
-                  _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  _isPasswordVisible
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
                 ),
                 onPressed: () {
                   setState(() {
@@ -151,27 +155,41 @@ class __LoginFormState extends State<_LoginForm> {
               ),
             ),
           ),
+          DsBox.vlg,
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.blue, // Azul estilo link
+              ),
               onPressed: () {
                 if (kIsWeb) {
                   context.go('/forgot-password');
                 } else {
-                  // For mobile, use the context to navigate
                   context.push('/forgot-password');
                 }
               },
-              child: Text(l10n.forgotPassword),
+              child: Text(
+                l10n.forgotPassword,
+                style: const TextStyle(color: Colors.blue, fontSize: 16),
+              ),
             ),
           ),
           const SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(Icons.face_outlined),
-              const SizedBox(width: 10),
-              Text(l10n.rememberWithFaceId),
-              const Spacer(),
+              Row(
+                children: [
+                  Assets.svg.faceId.svg(width: 24, height: 24),
+                  DsBox.hlg,
+                  Text(
+                    l10n.rememberWithFaceId,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+
               Switch(
                 value: _rememberWithFaceId,
                 onChanged: (value) {
@@ -216,7 +234,7 @@ class __LoginFormState extends State<_LoginForm> {
             onPressed: () {},
             child: Text(
               l10n.openAccount,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ],

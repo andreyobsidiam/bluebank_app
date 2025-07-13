@@ -2,6 +2,7 @@
     "@@locale": "es",
     "loginButton": "Iniciar Sesión",
     "emailHint": "Correo Electrónico",
+    "emailOrLogon": "Correo Electrónico o Logon",
     "passwordHint": "Contraseña",
     "goodAfternoon": "Buenas Tardes",
     "forgotPassword": "Olvidé la contraseña",

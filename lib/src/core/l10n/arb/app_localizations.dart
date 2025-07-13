@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Email'**
   String get emailHint;
 
+  /// No description provided for @emailOrLogon.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or Logon'**
+  String get emailOrLogon;
+
   /// No description provided for @passwordHint.
   ///
   /// In en, this message translates to:

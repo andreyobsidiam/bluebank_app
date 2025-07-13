@@ -15,6 +15,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailHint => 'Correo Electrónico';
 
   @override
+  String get emailOrLogon => 'Correo Electrónico o Logon';
+
+  @override
   String get passwordHint => 'Contraseña';
 
   @override
