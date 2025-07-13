@@ -1,3 +1,4 @@
+import 'package:bluebank_app/src/ds/ds.dart';
 import 'package:bluebank_app/src/features/localization/presentation/bloc/localization_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,31 +47,8 @@ class LanguageSelectionPage extends StatelessWidget {
   }
 
   Widget _buildMobileLayout(BuildContext context) {
-    return Container(
-      color: const Color(0xFF2C4097),
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Center(child: Image.asset('assets/logo.png', height: 80)),
-            ),
-            Expanded(
-              flex: 8,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: _LanguageSelectionForm(),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SafeArea(
+      child: Column(children: [DsBox.v3xl, _LanguageSelectionForm()]),
     );
   }
 }
@@ -89,15 +67,13 @@ class _LanguageSelectionForm extends StatelessWidget {
           Text(
             'Choose your language',
             textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: textTheme.headlineLarge,
           ),
           const SizedBox(height: 8),
           Text(
             'Elige tu lenguaje',
             textAlign: TextAlign.center,
-            style: textTheme.titleLarge?.copyWith(color: Colors.grey[600]),
+            style: textTheme.headlineLarge,
           ),
           const SizedBox(height: 60),
           _LanguageOption(
@@ -140,27 +116,18 @@ class _LanguageOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.grey[200],
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 0,
+    return Container(
+      padding: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey[300]!, width: 0.5),
+        ),
       ),
-      child: Row(
-        children: [
-          SvgPicture.asset(svgAsset, height: 32, width: 32),
-          const SizedBox(width: 24),
-          Expanded(
-            child: Text(
-              language,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          const Icon(Icons.arrow_forward_ios, size: 16),
-        ],
+      child: ListTile(
+        onTap: onTap,
+        leading: SvgPicture.asset(svgAsset, height: 32, width: 32),
+        title: Text(language, style: Theme.of(context).textTheme.titleMedium),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       ),
     );
   }

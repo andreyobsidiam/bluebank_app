@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
               textTheme: GoogleFonts.poppinsTextTheme(
                 Theme.of(context).textTheme,
               ),
+
+              // Define the background color of scaffold
+              scaffoldBackgroundColor: Colors.white,
             ),
             routerConfig: AppRouter.router,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
