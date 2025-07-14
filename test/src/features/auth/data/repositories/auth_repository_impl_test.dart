@@ -1,23 +1,32 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:bluebank_app/src/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:bluebank_app/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
 import 'package:bluebank_app/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:bluebank_app/src/features/auth/domain/entities/user.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
+
+class MockAuthLocalDataSource extends Mock implements AuthLocalDataSource {}
 
 void main() {
   late AuthRepositoryImpl repository;
   late MockAuthRemoteDataSource mockAuthRemoteDataSource;
+  late MockAuthLocalDataSource mockAuthLocalDataSource;
 
   setUp(() {
     mockAuthRemoteDataSource = MockAuthRemoteDataSource();
-    repository = AuthRepositoryImpl(mockAuthRemoteDataSource);
+    mockAuthLocalDataSource = MockAuthLocalDataSource();
+    repository = AuthRepositoryImpl(
+      mockAuthRemoteDataSource,
+      mockAuthLocalDataSource,
+    );
   });
 
   const tEmail = 'test@test.com';
   const tPassword = 'password';
+  const tOtp = '123456';
   final tUserModel = UserModel(id: '1', email: tEmail);
   final User tUser = tUserModel.toEntity();
 
@@ -79,6 +88,60 @@ void main() {
       // assert
       verify(() => mockAuthRemoteDataSource.logout()).called(1);
       verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
+  });
+
+  group('sendOtp', () {
+    test('should get otp from remote and save it to local', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.sendOtp(email: tEmail),
+      ).thenAnswer((_) async => tOtp);
+      when(
+        () => mockAuthLocalDataSource.saveOtp(tOtp),
+      ).thenAnswer((_) async => {});
+      // act
+      await repository.sendOtp(email: tEmail);
+      // assert
+      verify(() => mockAuthRemoteDataSource.sendOtp(email: tEmail)).called(1);
+      verify(() => mockAuthLocalDataSource.saveOtp(tOtp)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+      verifyNoMoreInteractions(mockAuthLocalDataSource);
+    });
+  });
+
+  group('verifyOtp', () {
+    test('should call remote datasource when otp is correct', () async {
+      // arrange
+      when(
+        () => mockAuthLocalDataSource.getOtp(),
+      ).thenAnswer((_) async => tOtp);
+      when(
+        () => mockAuthRemoteDataSource.verifyOtp(email: tEmail, token: tOtp),
+      ).thenAnswer((_) async => {});
+      // act
+      await repository.verifyOtp(token: tOtp);
+      // assert
+      verify(() => mockAuthLocalDataSource.getOtp()).called(1);
+      verify(
+        () => mockAuthRemoteDataSource.verifyOtp(email: tEmail, token: tOtp),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+      verifyNoMoreInteractions(mockAuthLocalDataSource);
+    });
+
+    test('should throw exception when otp is incorrect', () async {
+      // arrange
+      when(
+        () => mockAuthLocalDataSource.getOtp(),
+      ).thenAnswer((_) async => 'wrong_otp');
+      // act
+      final call = repository.verifyOtp;
+      // assert
+      expect(() => call(token: tOtp), throwsA(isA<Exception>()));
+      verify(() => mockAuthLocalDataSource.getOtp()).called(1);
+      verifyNoMoreInteractions(mockAuthLocalDataSource);
+      verifyZeroInteractions(mockAuthRemoteDataSource);
     });
   });
 }

@@ -181,6 +181,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Link'**
   String get sendLink;
+
+  /// No description provided for @otpCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP Code'**
+  String get otpCodeTitle;
+
+  /// No description provided for @otpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent you a 6-digit code to your email linked to your Blue Bank account'**
+  String get otpMessage;
+
+  /// No description provided for @otpMessageBold.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent you a 6-digit code to your email'**
+  String get otpMessageBold;
+
+  /// No description provided for @completeOtpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the complete OTP'**
+  String get completeOtpMessage;
+
+  /// No description provided for @otpSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP sent to your email'**
+  String get otpSentMessage;
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmButton;
+
+  /// No description provided for @resendCodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resendCodeButton;
 }
 
 class _AppLocalizationsDelegate

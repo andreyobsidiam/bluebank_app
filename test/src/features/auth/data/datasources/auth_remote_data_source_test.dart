@@ -1,8 +1,9 @@
+import 'package:bluebank_app/src/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:bluebank_app/src/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
 
 class MockSupabaseClient extends Mock implements SupabaseClient {}
 
@@ -10,15 +11,19 @@ class MockGoTrueClient extends Mock implements GoTrueClient {}
 
 class MockUser extends Mock implements User {}
 
+class MockDio extends Mock implements Dio {}
+
 void main() {
   late AuthRemoteDataSourceImpl dataSource;
   late MockSupabaseClient mockSupabaseClient;
   late MockGoTrueClient mockGoTrueClient;
+  late MockDio mockDio;
 
   setUp(() {
     mockSupabaseClient = MockSupabaseClient();
     mockGoTrueClient = MockGoTrueClient();
-    dataSource = AuthRemoteDataSourceImpl(mockSupabaseClient);
+    mockDio = MockDio();
+    dataSource = AuthRemoteDataSourceImpl(mockSupabaseClient, mockDio);
 
     when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
   });
@@ -88,6 +93,27 @@ void main() {
       // assert
       verify(() => mockGoTrueClient.signOut()).called(1);
       verifyNoMoreInteractions(mockGoTrueClient);
+    });
+  });
+
+  group('sendOtp', () {
+    test('should return otp when call to api is successful', () async {
+      // arrange
+      when(
+        () => mockDio.post(
+          any(),
+          data: any(named: 'data'),
+          options: any(named: 'options'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            Response(requestOptions: RequestOptions(path: ''), statusCode: 200),
+      );
+      // act
+      final result = await dataSource.sendOtp(email: tEmail);
+
+      // assert
+      expect(result, isA<String>());
     });
   });
 }

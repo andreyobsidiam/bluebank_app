@@ -15,6 +15,12 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/back-button.svg
+  SvgGenImage get backButton => const SvgGenImage('assets/svg/back-button.svg');
+
+  /// File path: assets/svg/email_sent.svg
+  SvgGenImage get emailSent => const SvgGenImage('assets/svg/email_sent.svg');
+
   /// File path: assets/svg/face_id.svg
   SvgGenImage get faceId => const SvgGenImage('assets/svg/face_id.svg');
 
@@ -28,7 +34,14 @@ class $AssetsSvgGen {
   SvgGenImage get lineColors => const SvgGenImage('assets/svg/line_colors.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [faceId, flagKindom, flagSpain, lineColors];
+  List<SvgGenImage> get values => [
+    backButton,
+    emailSent,
+    faceId,
+    flagKindom,
+    flagSpain,
+    lineColors,
+  ];
 }
 
 class Assets {

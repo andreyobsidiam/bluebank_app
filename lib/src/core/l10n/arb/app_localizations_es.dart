@@ -52,4 +52,27 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sendLink => 'Enviar Enlace';
+
+  @override
+  String get otpCodeTitle => 'Código OTP';
+
+  @override
+  String get otpMessage =>
+      'Te enviamos un código de 6 dígitos a tu correo electrónico vinculado a tu cuenta de Blue Bank';
+
+  @override
+  String get otpMessageBold =>
+      'Te enviamos un código de 6 dígitos a tu correo electrónico';
+
+  @override
+  String get completeOtpMessage => 'Por favor, introduce el OTP completo';
+
+  @override
+  String get otpSentMessage => 'OTP enviado a tu correo electrónico';
+
+  @override
+  String get confirmButton => 'Confirmar';
+
+  @override
+  String get resendCodeButton => 'Reenviar Código';
 }

@@ -1,3 +1,4 @@
+import 'package:bluebank_app/src/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:bluebank_app/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:bluebank_app/src/features/auth/domain/entities/user.dart';
 import 'package:bluebank_app/src/features/auth/domain/repositories/auth_repository.dart';
@@ -6,8 +7,9 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _authRemoteDataSource;
+  final AuthLocalDataSource _authLocalDataSource;
 
-  AuthRepositoryImpl(this._authRemoteDataSource);
+  AuthRepositoryImpl(this._authRemoteDataSource, this._authLocalDataSource);
 
   @override
   Future<User> login({required String email, required String password}) async {
@@ -26,5 +28,19 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> resetPassword({required String email}) {
     return _authRemoteDataSource.resetPassword(email: email);
+  }
+
+  @override
+  Future<void> sendOtp({required String email}) async {
+    final otp = await _authRemoteDataSource.sendOtp(email: email);
+    await _authLocalDataSource.saveOtp(otp);
+  }
+
+  @override
+  Future<void> verifyOtp({required String token}) async {
+    final isVerified = await _authLocalDataSource.verifyOtp(token: token);
+    if (!isVerified) {
+      throw Exception('Invalid OTP');
+    }
   }
 }

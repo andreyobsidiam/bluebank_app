@@ -1,0 +1,49 @@
+# curl -X POST \
+#         https://api.mailersend.com/v1/email \
+#         -H 'Content-Type: application/json' \
+#         -H 'X-Requested-With: XMLHttpRequest' \
+#         -H 'Authorization: Bearer {place your token here without brackets}' \
+#         -d '{
+#             "from": {
+#                 "email": "info@domain.com"
+#             },
+#             "to": [
+#                 {
+#                     "email": "recipient@email.com"
+#                 }
+#             ],
+#     "personalization": [{
+#         "email": "recipient@email.com",
+#         "data": {
+#             "variable": ""
+#         }
+#     }],
+#             "template_id": "yzkq340k16xgd796"
+#         }'
+        
+
+### This file is part of the BlueBank project.
+
+POST https://api.mailersend.com/v1/email HTTP/1.1
+Authorization: Bearer mlsn.867cf33b8c55175c574e8718cb390632efe12ada816b7e92a51ece190f4a3070
+Content-Type: application/json
+
+{
+
+    "from": {
+        "email": "test@test-eqvygm0j3q5l0p7w.mlsender.net"
+    },
+    "to": [
+        {
+            "email": "andrey.delgado@obsidiam.com"
+        }
+    ],
+    "subject": "One Time Password",
+    "personalization": [{
+        "email": "andrey.delgado@obsidiam.com",
+        "data": {
+            "variable": "101100"
+        }
+    }],
+    "template_id": "yzkq340k16xgd796"
+}

@@ -18,19 +18,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  bool _rememberWithFaceId = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AuthBloc>(),
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          state.when(
-            initial: () {},
-            loading: () {},
+          state.whenOrNull(
             authenticated: (user) {
-              // Navigate to home page
+              if (kIsWeb) {
+                context.go('/otp-validation', extra: _emailController.text);
+              } else {
+                context.push('/otp-validation', extra: _emailController.text);
+              }
             },
-            unauthenticated: () {},
             error: (message) {
               ScaffoldMessenger.of(
                 context,
@@ -68,7 +81,22 @@ class _LoginPageState extends State<LoginPage> {
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
-              child: _LoginForm(),
+              child: _LoginForm(
+                emailController: _emailController,
+                passwordController: _passwordController,
+                isPasswordVisible: _isPasswordVisible,
+                rememberWithFaceId: _rememberWithFaceId,
+                onPasswordVisibilityChanged: () {
+                  setState(() {
+                    _isPasswordVisible = !_isPasswordVisible;
+                  });
+                },
+                onRememberWithFaceIdChanged: (value) {
+                  setState(() {
+                    _rememberWithFaceId = value;
+                  });
+                },
+              ),
             ),
           ),
         ),
@@ -96,7 +124,22 @@ class _LoginPageState extends State<LoginPage> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: _LoginForm(),
+                child: _LoginForm(
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  isPasswordVisible: _isPasswordVisible,
+                  rememberWithFaceId: _rememberWithFaceId,
+                  onPasswordVisibilityChanged: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                  onRememberWithFaceIdChanged: (value) {
+                    setState(() {
+                      _rememberWithFaceId = value;
+                    });
+                  },
+                ),
               ),
             ),
           ],
@@ -106,16 +149,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class _LoginForm extends StatefulWidget {
-  @override
-  __LoginFormState createState() => __LoginFormState();
-}
+class _LoginForm extends StatelessWidget {
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final bool isPasswordVisible;
+  final bool rememberWithFaceId;
+  final VoidCallback onPasswordVisibilityChanged;
+  final ValueChanged<bool> onRememberWithFaceIdChanged;
 
-class __LoginFormState extends State<_LoginForm> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
-  bool _rememberWithFaceId = false;
+  const _LoginForm({
+    required this.emailController,
+    required this.passwordController,
+    required this.isPasswordVisible,
+    required this.rememberWithFaceId,
+    required this.onPasswordVisibilityChanged,
+    required this.onRememberWithFaceIdChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -132,26 +181,22 @@ class __LoginFormState extends State<_LoginForm> {
           ),
           const SizedBox(height: 30),
           TextField(
-            controller: _emailController,
+            controller: emailController,
             decoration: InputDecoration(labelText: l10n.emailOrLogon),
           ),
           const SizedBox(height: 20),
           TextField(
-            controller: _passwordController,
-            obscureText: !_isPasswordVisible,
+            controller: passwordController,
+            obscureText: !isPasswordVisible,
             decoration: InputDecoration(
               labelText: l10n.passwordHint,
               suffixIcon: IconButton(
                 icon: Icon(
-                  _isPasswordVisible
+                  isPasswordVisible
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined,
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isPasswordVisible = !_isPasswordVisible;
-                  });
-                },
+                onPressed: onPasswordVisibilityChanged,
               ),
             ),
           ),
@@ -189,14 +234,9 @@ class __LoginFormState extends State<_LoginForm> {
                   ),
                 ],
               ),
-
               Switch(
-                value: _rememberWithFaceId,
-                onChanged: (value) {
-                  setState(() {
-                    _rememberWithFaceId = value;
-                  });
-                },
+                value: rememberWithFaceId,
+                onChanged: onRememberWithFaceIdChanged,
               ),
             ],
           ),
@@ -209,8 +249,8 @@ class __LoginFormState extends State<_LoginForm> {
                   onPressed: () {
                     context.read<AuthBloc>().add(
                       AuthEvent.login(
-                        email: _emailController.text,
-                        password: _passwordController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
                       ),
                     );
                   },

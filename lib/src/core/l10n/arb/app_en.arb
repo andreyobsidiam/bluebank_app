@@ -13,5 +13,12 @@
     "enterYourRegisteredEmail": "Enter your registered email",
     "emailRegisteredInBlueBank": "Email registered in Blue Bank",
     "weWillSendYouAnEmail": "We will send you an email with a link to your registered email to continue the process",
-    "sendLink": "Send Link"
+    "sendLink": "Send Link",
+    "otpCodeTitle": "OTP Code",
+    "otpMessage": "We sent you a 6-digit code to your email linked to your Blue Bank account",
+    "otpMessageBold": "We sent you a 6-digit code to your email",
+    "completeOtpMessage": "Please enter the complete OTP",
+    "otpSentMessage": "OTP sent to your email",
+    "confirmButton": "Confirm",
+    "resendCodeButton": "Resend Code"
 }

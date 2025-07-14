@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:bluebank_app/src/features/auth/presentation/pages/otp_validation_page.dart';
 import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
 import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
@@ -20,29 +21,32 @@ class AppRouter {
         path: '/forgot-password',
         builder: (context, state) => const ForgotPasswordPage(),
       ),
+      GoRoute(
+        path: '/otp-validation',
+        builder: (context, state) {
+          final email = state.extra as String;
+          return OtpValidationPage(email: email);
+        },
+      ),
     ],
     initialLocation: '/welcome',
     redirect: (context, state) {
       final session = Supabase.instance.client.auth.currentSession;
       final bool loggedIn = session != null;
-      final bool onAuthFlow =
-          state.matchedLocation == '/login' ||
-          state.matchedLocation == '/welcome' ||
-          state.matchedLocation == '/forgot-password';
 
-      if (!loggedIn) {
-        return onAuthFlow ? null : '/welcome';
-      }
-
-      if (onAuthFlow) {
-        return '/';
-      }
-
-      return null;
+      return loggedIn
+          ? (state.matchedLocation == '/welcome' ||
+                    state.matchedLocation == '/login')
+                ? '/'
+                : null
+          : (state.matchedLocation != '/welcome' &&
+                state.matchedLocation != '/login')
+          ? '/login'
+          : null;
     },
-    refreshListenable: GoRouterRefreshStream(
-      Supabase.instance.client.auth.onAuthStateChange,
-    ),
+    // refreshListenable: GoRouterRefreshStream(
+    //   Supabase.instance.client.auth.onAuthStateChange,
+    // ),
   );
 }
 

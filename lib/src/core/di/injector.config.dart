@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../features/auth/data/datasources/auth_local_data_source.dart'
+    as _i852;
 import '../../features/auth/data/datasources/auth_remote_data_source.dart'
     as _i107;
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
@@ -24,6 +26,8 @@ import '../../features/auth/domain/usecases/login_usecase.dart' as _i188;
 import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
 import '../../features/auth/domain/usecases/reset_password_usecase.dart'
     as _i474;
+import '../../features/auth/domain/usecases/send_otp_usecase.dart' as _i663;
+import '../../features/auth/domain/usecases/verify_otp_usecase.dart' as _i503;
 import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i797;
 import '../../features/localization/data/datasources/language_local_data_source.dart'
     as _i178;
@@ -63,17 +67,17 @@ Future<_i174.GetIt> $initGetIt(
     () => _i178.LanguageLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
   );
   gh.lazySingleton<_i357.ApiClient>(() => _i357.ApiClient(gh<_i361.Dio>()));
-  gh.lazySingleton<_i107.AuthRemoteDataSource>(
-    () => _i107.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+  gh.lazySingleton<_i852.AuthLocalDataSource>(
+    () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
   );
-  gh.lazySingleton<_i787.AuthRepository>(
-    () => _i153.AuthRepositoryImpl(gh<_i107.AuthRemoteDataSource>()),
+  gh.lazySingleton<_i107.AuthRemoteDataSource>(
+    () => _i107.AuthRemoteDataSourceImpl(
+      gh<_i454.SupabaseClient>(),
+      gh<_i361.Dio>(),
+    ),
   );
   gh.lazySingleton<_i297.PostRemoteDataSource>(
     () => _i297.PostRemoteDataSourceImpl(gh<_i357.ApiClient>()),
-  );
-  gh.factory<_i474.ResetPasswordUseCase>(
-    () => _i474.ResetPasswordUseCase(gh<_i787.AuthRepository>()),
   );
   gh.lazySingleton<_i1031.LanguageRepository>(
     () => _i48.LanguageRepositoryImpl(gh<_i178.LanguageLocalDataSource>()),
@@ -81,26 +85,43 @@ Future<_i174.GetIt> $initGetIt(
   gh.lazySingleton<_i786.PostRepository>(
     () => _i1039.PostRepositoryImpl(gh<_i297.PostRemoteDataSource>()),
   );
+  gh.lazySingleton<_i787.AuthRepository>(
+    () => _i153.AuthRepositoryImpl(
+      gh<_i107.AuthRemoteDataSource>(),
+      gh<_i852.AuthLocalDataSource>(),
+    ),
+  );
+  gh.lazySingleton<_i472.GetPosts>(
+    () => _i472.GetPosts(gh<_i786.PostRepository>()),
+  );
+  gh.factory<_i474.ResetPasswordUseCase>(
+    () => _i474.ResetPasswordUseCase(gh<_i787.AuthRepository>()),
+  );
+  gh.factory<_i459.LocalizationBloc>(
+    () => _i459.LocalizationBloc(gh<_i1031.LanguageRepository>()),
+  );
+  gh.factory<_i896.PostBloc>(() => _i896.PostBloc(gh<_i472.GetPosts>()));
   gh.factory<_i188.LoginUseCase>(
     () => _i188.LoginUseCase(gh<_i787.AuthRepository>()),
   );
   gh.factory<_i48.LogoutUseCase>(
     () => _i48.LogoutUseCase(gh<_i787.AuthRepository>()),
   );
+  gh.factory<_i663.SendOtpUseCase>(
+    () => _i663.SendOtpUseCase(gh<_i787.AuthRepository>()),
+  );
+  gh.factory<_i503.VerifyOtpUseCase>(
+    () => _i503.VerifyOtpUseCase(gh<_i787.AuthRepository>()),
+  );
   gh.factory<_i797.AuthBloc>(
     () => _i797.AuthBloc(
       gh<_i188.LoginUseCase>(),
       gh<_i48.LogoutUseCase>(),
       gh<_i474.ResetPasswordUseCase>(),
+      gh<_i663.SendOtpUseCase>(),
+      gh<_i503.VerifyOtpUseCase>(),
     ),
   );
-  gh.lazySingleton<_i472.GetPosts>(
-    () => _i472.GetPosts(gh<_i786.PostRepository>()),
-  );
-  gh.factory<_i459.LocalizationBloc>(
-    () => _i459.LocalizationBloc(gh<_i1031.LanguageRepository>()),
-  );
-  gh.factory<_i896.PostBloc>(() => _i896.PostBloc(gh<_i472.GetPosts>()));
   return getIt;
 }
 
