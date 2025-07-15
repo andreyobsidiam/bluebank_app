@@ -27,6 +27,8 @@ import '../../features/auth/domain/usecases/logout_usecase.dart' as _i48;
 import '../../features/auth/domain/usecases/reset_password_usecase.dart'
     as _i474;
 import '../../features/auth/domain/usecases/send_otp_usecase.dart' as _i663;
+import '../../features/auth/domain/usecases/update_password_usecase.dart'
+    as _i387;
 import '../../features/auth/domain/usecases/verify_otp_usecase.dart' as _i503;
 import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i797;
 import '../../features/localization/data/datasources/language_local_data_source.dart'
@@ -110,6 +112,9 @@ Future<_i174.GetIt> $initGetIt(
   gh.factory<_i503.VerifyOtpUseCase>(
     () => _i503.VerifyOtpUseCase(gh<_i787.AuthRepository>()),
   );
+  gh.factory<_i387.UpdatePasswordUseCase>(
+    () => _i387.UpdatePasswordUseCase(gh<_i787.AuthRepository>()),
+  );
   gh.factory<_i797.AuthBloc>(
     () => _i797.AuthBloc(
       gh<_i188.LoginUseCase>(),
@@ -117,6 +122,7 @@ Future<_i174.GetIt> $initGetIt(
       gh<_i474.ResetPasswordUseCase>(),
       gh<_i663.SendOtpUseCase>(),
       gh<_i503.VerifyOtpUseCase>(),
+      gh<_i387.UpdatePasswordUseCase>(),
     ),
   );
   return getIt;

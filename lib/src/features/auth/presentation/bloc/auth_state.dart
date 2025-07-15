@@ -13,4 +13,5 @@ class AuthState with _$AuthState {
   const factory AuthState.otpVerified() = _OtpVerified;
   const factory AuthState.passwordResetLinkSent() = _PasswordResetLinkSent;
   const factory AuthState.error({required String message}) = _Error;
+  const factory AuthState.passwordUpdated() = _PasswordUpdated;
 }

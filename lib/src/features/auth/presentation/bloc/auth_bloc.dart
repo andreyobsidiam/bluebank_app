@@ -2,6 +2,7 @@ import 'package:bluebank_app/src/features/auth/domain/usecases/login_usecase.dar
 import 'package:bluebank_app/src/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/send_otp_usecase.dart';
+import 'package:bluebank_app/src/features/auth/domain/usecases/update_password_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show Bloc;
 import 'package:injectable/injectable.dart';
@@ -16,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ResetPasswordUseCase _resetPasswordUseCase;
   final SendOtpUseCase _sendOtpUseCase;
   final VerifyOtpUseCase _verifyOtpUseCase;
+  final UpdatePasswordUseCase _updatePasswordUseCase;
 
   AuthBloc(
     this._loginUseCase,
@@ -23,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._resetPasswordUseCase,
     this._sendOtpUseCase,
     this._verifyOtpUseCase,
+    this._updatePasswordUseCase,
   ) : super(const AuthState.initial()) {
     on<AuthEvent>((event, emit) async {
       await event.when(
@@ -45,15 +48,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
         },
         resetPassword: (email) async {
-          emit(const AuthState.passwordResetLinkSent());
-
-          // emit(const AuthState.loading());
-          // try {
-          //   await _resetPasswordUseCase(email: email);
-          //   emit(const AuthState.passwordResetLinkSent());
-          // } catch (e) {
-          //   emit(AuthState.error(message: e.toString()));
-          // }
+          emit(const AuthState.loading());
+          try {
+            await _resetPasswordUseCase(email: email);
+            emit(const AuthState.passwordResetLinkSent());
+          } catch (e) {
+            emit(AuthState.error(message: e.toString()));
+          }
         },
         sendOtp: (email, subject, templateId) async {
           emit(const AuthState.loading());
@@ -74,6 +75,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             // This will automatically sign in the user.
             await _verifyOtpUseCase(email: email, token: token);
             emit(const AuthState.otpVerified()); // User is authenticated
+          } catch (e) {
+            emit(AuthState.error(message: e.toString()));
+          }
+        },
+
+        updatePassword: (password) async {
+          emit(const AuthState.loading());
+          try {
+            await _updatePasswordUseCase(password: password);
+            emit(const AuthState.passwordUpdated());
           } catch (e) {
             emit(AuthState.error(message: e.toString()));
           }

@@ -16,8 +16,12 @@ class AuthEvent with _$AuthEvent {
     required String subject,
     required String templateId,
   }) = _SendOtp;
+
   const factory AuthEvent.verifyOtp({
     required String email,
     required String token,
   }) = _VerifyOtp;
+
+  const factory AuthEvent.updatePassword({required String password}) =
+      _UpdatePassword;
 }

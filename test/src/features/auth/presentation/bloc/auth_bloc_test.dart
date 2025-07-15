@@ -6,6 +6,7 @@ import 'package:bluebank_app/src/features/auth/domain/usecases/login_usecase.dar
 import 'package:bluebank_app/src/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/send_otp_usecase.dart';
+import 'package:bluebank_app/src/features/auth/domain/usecases/update_password_usecase.dart';
 import 'package:bluebank_app/src/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
@@ -21,6 +22,8 @@ class MockSendOtpUseCase extends Mock implements SendOtpUseCase {}
 
 class MockVerifyOtpUseCase extends Mock implements VerifyOtpUseCase {}
 
+class MockUpdatePasswordUseCase extends Mock implements UpdatePasswordUseCase {}
+
 void main() {
   late AuthBloc authBloc;
   late MockLoginUseCase mockLoginUseCase;
@@ -28,6 +31,7 @@ void main() {
   late MockResetPasswordUseCase mockResetPasswordUseCase;
   late MockSendOtpUseCase mockSendOtpUseCase;
   late MockVerifyOtpUseCase mockVerifyOtpUseCase;
+  late MockUpdatePasswordUseCase mockUpdatePasswordUseCase;
 
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
@@ -35,12 +39,14 @@ void main() {
     mockResetPasswordUseCase = MockResetPasswordUseCase();
     mockSendOtpUseCase = MockSendOtpUseCase();
     mockVerifyOtpUseCase = MockVerifyOtpUseCase();
+    mockUpdatePasswordUseCase = MockUpdatePasswordUseCase();
     authBloc = AuthBloc(
       mockLoginUseCase,
       mockLogoutUseCase,
       mockResetPasswordUseCase,
       mockSendOtpUseCase,
       mockVerifyOtpUseCase,
+      mockUpdatePasswordUseCase,
     );
   });
 
@@ -249,6 +255,43 @@ void main() {
       },
       act: (bloc) =>
           bloc.add(const AuthEvent.verifyOtp(email: tEmail, token: tToken)),
+      expect: () => [
+        const AuthState.loading(),
+        AuthState.error(message: tException.toString()),
+      ],
+    );
+  });
+
+  group('UpdatePasswordEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [loading, passwordUpdated] when update password is successful',
+      build: () {
+        when(
+          () => mockUpdatePasswordUseCase(password: tPassword),
+        ).thenAnswer((_) async => Future.value());
+        return authBloc;
+      },
+      act: (bloc) =>
+          bloc.add(const AuthEvent.updatePassword(password: tPassword)),
+      expect: () => [
+        const AuthState.loading(),
+        const AuthState.passwordUpdated(),
+      ],
+      verify: (_) {
+        verify(() => mockUpdatePasswordUseCase(password: tPassword)).called(1);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [loading, error] when update password fails',
+      build: () {
+        when(
+          () => mockUpdatePasswordUseCase(password: tPassword),
+        ).thenThrow(tException);
+        return authBloc;
+      },
+      act: (bloc) =>
+          bloc.add(const AuthEvent.updatePassword(password: tPassword)),
       expect: () => [
         const AuthState.loading(),
         AuthState.error(message: tException.toString()),

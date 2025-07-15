@@ -51,4 +51,12 @@ class AuthRepositoryImpl implements AuthRepository {
       throw Exception('Invalid OTP');
     }
   }
+
+  @override
+  Future<void> updatePassword({
+    required String email,
+    required String password,
+  }) {
+    return _authRemoteDataSource.updatePassword(password: password);
+  }
 }

@@ -33,6 +33,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/line_colors.svg
   SvgGenImage get lineColors => const SvgGenImage('assets/svg/line_colors.svg');
 
+  /// File path: assets/svg/link_off.svg
+  SvgGenImage get linkOff => const SvgGenImage('assets/svg/link_off.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
     backButton,
@@ -41,6 +44,7 @@ class $AssetsSvgGen {
     flagKindom,
     flagSpain,
     lineColors,
+    linkOff,
   ];
 }
 
@@ -49,10 +53,11 @@ class Assets {
 
   static const String aEnv = '.env';
   static const AssetGenImage logo = AssetGenImage('assets/logo.png');
+  static const AssetGenImage logoBlue = AssetGenImage('assets/logo_blue.png');
   static const $AssetsSvgGen svg = $AssetsSvgGen();
 
   /// List of all assets
-  static List<dynamic> get values => [aEnv, logo];
+  static List<dynamic> get values => [aEnv, logo, logoBlue];
 }
 
 class AssetGenImage {

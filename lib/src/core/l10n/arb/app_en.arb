@@ -22,5 +22,12 @@
     "completeOtpMessage": "Please enter the complete OTP",
     "otpSentMessage": "OTP sent to your email",
     "confirmButton": "Confirm",
-    "resendCodeButton": "Resend Code"
+    "resendCodeButton": "Resend Code",
+    "linkExpired": "The link has expired",
+    "passwordChanged": "Your password has been successfully changed.",
+    "instructionsEmailTitle": "Instructions email",
+    "instructionsSentTo": "Instructions has been sent to",
+    "instructionsToChangePassword": "Instructions to change your password has been set to your inbox. Be on the lookout for the next steps.",
+    "resendInstructions": "Resend Instructions",
+    "resendInstructionsIn": "Resend Instructions ({seconds} seconds)"
 }

@@ -3,7 +3,6 @@ import 'package:bluebank_app/src/core/common/utils/context_extensions.dart';
 import 'package:bluebank_app/src/core/common/utils/time.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
-import 'package:bluebank_app/src/ds/atom/box.dart';
 import 'package:bluebank_app/src/ds/ds.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';

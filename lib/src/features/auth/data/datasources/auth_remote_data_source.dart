@@ -12,6 +12,8 @@ abstract class AuthRemoteDataSource {
     required String templateId,
   });
   Future<void> verifyOtp({required String email, required String token});
+
+  Future<void> updatePassword({required String password});
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -82,5 +84,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       token: token,
       type: OtpType.email,
     );
+  }
+
+  @override
+  Future<void> updatePassword({required String password}) async {
+    await _supabaseClient.auth.updateUser(UserAttributes(password: password));
   }
 }

@@ -235,6 +235,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resend Code'**
   String get resendCodeButton;
+
+  /// No description provided for @linkExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'The link has expired'**
+  String get linkExpired;
+
+  /// No description provided for @passwordChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been successfully changed.'**
+  String get passwordChanged;
+
+  /// No description provided for @instructionsEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions email'**
+  String get instructionsEmailTitle;
+
+  /// No description provided for @instructionsSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions has been sent to'**
+  String get instructionsSentTo;
+
+  /// No description provided for @instructionsToChangePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions to change your password has been set to your inbox. Be on the lookout for the next steps.'**
+  String get instructionsToChangePassword;
+
+  /// No description provided for @resendInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Instructions'**
+  String get resendInstructions;
+
+  /// No description provided for @resendInstructionsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Instructions ({seconds} seconds)'**
+  String resendInstructionsIn(Object seconds);
 }
 
 class _AppLocalizationsDelegate

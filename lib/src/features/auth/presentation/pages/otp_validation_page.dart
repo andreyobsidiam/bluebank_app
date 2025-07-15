@@ -85,8 +85,8 @@ class _OtpValidationPageState extends State<OtpValidationPage> {
     context.read<AuthBloc>().add(
       AuthEvent.sendOtp(
         email: widget.email,
-        subject: 'Your One-Time Password',
-        templateId: 'yzkq340k16xgd796',
+        subject: widget.subject,
+        templateId: widget.templateId,
       ),
     );
   }
@@ -98,7 +98,7 @@ class _OtpValidationPageState extends State<OtpValidationPage> {
         listener: (context, state) {
           state.whenOrNull(
             otpVerified: () {
-              context.go(widget.redirectUrl);
+              context.go(widget.redirectUrl, extra: {'email': widget.email});
             },
             error: (message) {
               ScaffoldMessenger.of(

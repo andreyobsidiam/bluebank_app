@@ -1,33 +1,60 @@
 import 'dart:async';
+import 'package:bluebank_app/gen/assets.gen.dart';
+import 'package:bluebank_app/src/core/l10n/l10n.dart';
+import 'package:bluebank_app/src/ds/ds.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/update_password_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/otp_validation_page.dart';
+import 'package:bluebank_app/src/features/auth/presentation/pages/password_reset_email_sent_page.dart';
 import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
 import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppRouter {
+  static const String welcomePath = '/welcome';
+  static const String postPath = '/home';
+  static const String loginPath = '/login';
+  static const String forgotPasswordPath = '/forgot-password';
+  static const String updatePasswordPath = '/update-password';
+  static const String otpValidationPath = '/otp-validation';
+  static const String passwordResetEmailSentPath = '/password-reset-email-sent';
+
   static final router = GoRouter(
+    errorBuilder: (context, state) {
+      return Scaffold(body: Center(child: Assets.logoBlue.image(height: 100)));
+    },
+    redirect: (BuildContext context, GoRouterState state) {
+      final uri = state.uri;
+      if (uri.toString().contains('error_code=otp_expired')) {
+        // show a message to the user about OTP expiration
+        DsSnackBar.show(
+          context: context,
+          message: context.l10n.linkExpired,
+          icon: Assets.svg.linkOff.svg(height: 24, width: 24),
+        );
+        return AppRouter.forgotPasswordPath;
+      }
+      return null;
+    },
     routes: [
       GoRoute(
-        path: '/welcome',
+        path: welcomePath,
         builder: (context, state) => const LanguageSelectionPage(),
       ),
-      GoRoute(path: '/', builder: (context, state) => const PostPage()),
-      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(path: postPath, builder: (context, state) => const PostPage()),
+      GoRoute(path: loginPath, builder: (context, state) => const LoginPage()),
       GoRoute(
-        path: '/forgot-password',
+        path: forgotPasswordPath,
         builder: (context, state) => const ForgotPasswordPage(),
       ),
       GoRoute(
-        path: '/update-password',
+        path: updatePasswordPath,
         builder: (context, state) => const UpdatePasswordPage(),
       ),
       GoRoute(
-        path: '/otp-validation',
+        path: otpValidationPath,
         builder: (context, state) {
           final extra = state.extra;
           if (extra is! Map<String, String> ||
@@ -52,20 +79,19 @@ class AppRouter {
           );
         },
       ),
+      GoRoute(
+        path: passwordResetEmailSentPath,
+        builder: (context, state) {
+          final extra = state.extra;
+          if (extra is! Map<String, String> || !extra.containsKey('email')) {
+            return Scaffold(body: Center(child: Text('Invalid parameters.')));
+          }
+          final email = extra['email']!;
+          return PasswordResetEmailSentPage(email: email);
+        },
+      ),
     ],
-    initialLocation: '/welcome',
-    redirect: (context, state) {
-      final session = Supabase.instance.client.auth.currentSession;
-      final bool loggedIn = session != null;
-
-      return loggedIn ? '/' : null;
-    },
-    errorBuilder: (context, state) {
-      return Scaffold(body: Center(child: Text('Error: ${state.error}')));
-    },
-    // refreshListenable: GoRouterRefreshStream(
-    //   Supabase.instance.client.auth.onAuthStateChange,
-    // ),
+    initialLocation: welcomePath,
   );
 }
 

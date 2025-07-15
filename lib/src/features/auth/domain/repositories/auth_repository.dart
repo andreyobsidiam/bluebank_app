@@ -10,4 +10,9 @@ abstract class AuthRepository {
     required String templateId,
   });
   Future<void> verifyOtp({required String token});
+
+  Future<void> updatePassword({
+    required String email,
+    required String password,
+  });
 }

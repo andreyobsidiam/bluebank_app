@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bluebank_app/src/core/config/supabase/supabase_config.dart';
+import 'package:bluebank_app/src/core/common/utils/scaffolds.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/localization/presentation/bloc/localization_bloc.dart';
@@ -15,17 +18,55 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupInjector();
   await setupSupabase();
-  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
-    final session = data.session;
-    if (session != null && data.event == AuthChangeEvent.passwordRecovery) {
-      AppRouter.router.go('/update-password');
-    }
-  });
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final StreamSubscription<AuthState> _authStateSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange.listen(
+      (data) {
+        final session = data.session;
+        // Navega al usuario a la pantalla de login cuando se cierra la sesión
+        if (data.event == AuthChangeEvent.signedOut) {
+          AppRouter.router.go(AppRouter.loginPath);
+        }
+        if (data.event == AuthChangeEvent.passwordRecovery) {
+          // Redirige al usuario a la pantalla de 'forgot password' si el enlace de recuperación ha expirado
+          if (session == null) {
+            AppRouter.router.go(AppRouter.forgotPasswordPath);
+            return;
+          }
+
+          // Redirige al usuario a la pantalla para actualizar la contraseña
+          AppRouter.router.go(AppRouter.updatePasswordPath);
+        }
+      },
+      onError: (error) {
+        if (error is AuthException && error.statusCode == 'otp_expired') {
+          // La excepción de OTP expirado se maneja con la redirección, por lo que no es necesario registrarla.
+          return;
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +93,7 @@ class MyApp extends StatelessWidget {
             theme: brightness == Brightness.light
                 ? theme.light()
                 : theme.dark(),
-
+            scaffoldMessengerKey: scaffoldMessengerKey,
             routerConfig: AppRouter.router,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

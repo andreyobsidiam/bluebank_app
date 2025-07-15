@@ -1,5 +1,6 @@
 import 'package:bluebank_app/gen/assets.gen.dart';
 import 'package:bluebank_app/src/core/common/utils/context_extensions.dart';
+import 'package:bluebank_app/src/core/config/router/app_router.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/ds/ds.dart';
@@ -35,14 +36,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           state.maybeWhen(
             orElse: () {},
             passwordResetLinkSent: () {
-              context.go(
-                '/otp-validation',
-                extra: {
-                  'email': _emailController.text,
-                  'redirectUrl': '/update-password',
-                  'templateId': 'yzkq340krw0gd796',
-                  'subject': 'Reset Your Password',
-                },
+              context.push(
+                AppRouter.passwordResetEmailSentPath,
+                extra: {'email': _emailController.text},
               );
             },
             error: (message) {
@@ -97,7 +93,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           alignment: Alignment.centerLeft,
           child: IconButton(
             icon: Assets.svg.backButton.svg(height: 40, width: 40),
-            onPressed: () => context.pop(),
+            onPressed: () {
+              try {
+                context.pop();
+              } catch (_) {
+                context.go('/login');
+              }
+            },
           ),
         ),
       ),

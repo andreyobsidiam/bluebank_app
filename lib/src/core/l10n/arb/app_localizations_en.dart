@@ -78,4 +78,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resendCodeButton => 'Resend Code';
+
+  @override
+  String get linkExpired => 'The link has expired';
+
+  @override
+  String get passwordChanged => 'Your password has been successfully changed.';
+
+  @override
+  String get instructionsEmailTitle => 'Instructions email';
+
+  @override
+  String get instructionsSentTo => 'Instructions has been sent to';
+
+  @override
+  String get instructionsToChangePassword =>
+      'Instructions to change your password has been set to your inbox. Be on the lookout for the next steps.';
+
+  @override
+  String get resendInstructions => 'Resend Instructions';
+
+  @override
+  String resendInstructionsIn(Object seconds) {
+    return 'Resend Instructions ($seconds seconds)';
+  }
 }
