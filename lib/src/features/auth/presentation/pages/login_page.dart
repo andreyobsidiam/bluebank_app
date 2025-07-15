@@ -44,12 +44,22 @@ class _LoginPageState extends State<LoginPage> {
               if (kIsWeb) {
                 context.go(
                   '/otp-validation',
-                  extra: [_emailController.text, '/'],
+                  extra: {
+                    'email': _emailController.text,
+                    'redirectUrl': '/',
+                    'templateId': 'yzkq340k16xgd796',
+                    'subject': 'Your One-Time Password',
+                  },
                 );
               } else {
                 context.push(
                   '/otp-validation',
-                  extra: [_emailController.text, '/'],
+                  extra: {
+                    'email': _emailController.text,
+                    'redirectUrl': '/',
+                    'templateId': 'yzkq340k16xgd796',
+                    'subject': 'Your One-Time Password',
+                  },
                 );
               }
             },

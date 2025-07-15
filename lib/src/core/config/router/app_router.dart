@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bluebank_app/src/features/auth/presentation/pages/login_page.dart';
+import 'package:bluebank_app/src/features/auth/presentation/pages/update_password_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/otp_validation_page.dart';
 import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
@@ -22,18 +23,33 @@ class AppRouter {
         builder: (context, state) => const ForgotPasswordPage(),
       ),
       GoRoute(
+        path: '/update-password',
+        builder: (context, state) => const UpdatePasswordPage(),
+      ),
+      GoRoute(
         path: '/otp-validation',
         builder: (context, state) {
           final extra = state.extra;
-          if (extra is! List<String> || extra.length != 2) {
+          if (extra is! Map<String, String> ||
+              !extra.containsKey('email') ||
+              !extra.containsKey('redirectUrl') ||
+              !extra.containsKey('templateId') ||
+              !extra.containsKey('subject')) {
             return Scaffold(
               body: Center(child: Text('Invalid OTP parameters.')),
             );
           }
-          final email = extra[0];
-          final redirectUrl = extra[1];
+          final email = extra['email']!;
+          final redirectUrl = extra['redirectUrl']!;
+          final templateId = extra['templateId']!;
+          final subject = extra['subject']!;
 
-          return OtpValidationPage(email: email, redirectUrl: redirectUrl);
+          return OtpValidationPage(
+            email: email,
+            redirectUrl: redirectUrl,
+            templateId: templateId,
+            subject: subject,
+          );
         },
       ),
     ],
@@ -42,15 +58,7 @@ class AppRouter {
       final session = Supabase.instance.client.auth.currentSession;
       final bool loggedIn = session != null;
 
-      return loggedIn
-          ? (state.matchedLocation == '/welcome' ||
-                    state.matchedLocation == '/login')
-                ? '/'
-                : null
-          : (state.matchedLocation != '/welcome' &&
-                state.matchedLocation != '/login')
-          ? '/login'
-          : null;
+      return loggedIn ? '/' : null;
     },
     errorBuilder: (context, state) {
       return Scaffold(body: Center(child: Text('Error: ${state.error}')));

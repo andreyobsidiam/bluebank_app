@@ -98,18 +98,41 @@ void main() {
 
   group('sendOtp', () {
     const tOtp = '123456';
+    const tSubject = 'subject';
+    const tTemplateId = 'template_id';
     test('should return otp when call to function is successful', () async {
       // arrange
       when(
-        () => mockFunctionsClient.invoke('send-otp', body: {'email': tEmail}),
+        () => mockFunctionsClient.invoke(
+          'send-otp',
+          body: {
+            'email': tEmail,
+            'subject': tSubject,
+            'template_id': tTemplateId,
+          },
+        ),
       ).thenAnswer(
         (_) async => FunctionResponse(data: {'otp': tOtp}, status: 200),
       );
       // act
-      final result = await dataSource.sendOtp(email: tEmail);
+      final result = await dataSource.sendOtp(
+        email: tEmail,
+        subject: tSubject,
+        templateId: tTemplateId,
+      );
 
       // assert
       expect(result, tOtp);
+      verify(
+        () => mockFunctionsClient.invoke(
+          'send-otp',
+          body: {
+            'email': tEmail,
+            'subject': tSubject,
+            'template_id': tTemplateId,
+          },
+        ),
+      ).called(1);
     });
   });
 }

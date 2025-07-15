@@ -160,28 +160,59 @@ void main() {
   });
 
   group('SendOtpEvent', () {
+    const tSubject = 'subject';
+    const tTemplateId = 'template_id';
+
     blocTest<AuthBloc, AuthState>(
       'emits [loading, otpSent] when send otp is successful',
       build: () {
         when(
-          () => mockSendOtpUseCase(email: tEmail),
+          () => mockSendOtpUseCase(
+            email: tEmail,
+            subject: tSubject,
+            templateId: tTemplateId,
+          ),
         ).thenAnswer((_) async => Future.value());
         return authBloc;
       },
-      act: (bloc) => bloc.add(const AuthEvent.sendOtp(email: tEmail)),
+      act: (bloc) => bloc.add(
+        const AuthEvent.sendOtp(
+          email: tEmail,
+          subject: tSubject,
+          templateId: tTemplateId,
+        ),
+      ),
       expect: () => [const AuthState.loading(), const AuthState.otpSent()],
       verify: (_) {
-        verify(() => mockSendOtpUseCase(email: tEmail)).called(1);
+        verify(
+          () => mockSendOtpUseCase(
+            email: tEmail,
+            subject: tSubject,
+            templateId: tTemplateId,
+          ),
+        ).called(1);
       },
     );
 
     blocTest<AuthBloc, AuthState>(
       'emits [loading, error] when send otp fails',
       build: () {
-        when(() => mockSendOtpUseCase(email: tEmail)).thenThrow(tException);
+        when(
+          () => mockSendOtpUseCase(
+            email: tEmail,
+            subject: tSubject,
+            templateId: tTemplateId,
+          ),
+        ).thenThrow(tException);
         return authBloc;
       },
-      act: (bloc) => bloc.add(const AuthEvent.sendOtp(email: tEmail)),
+      act: (bloc) => bloc.add(
+        const AuthEvent.sendOtp(
+          email: tEmail,
+          subject: tSubject,
+          templateId: tTemplateId,
+        ),
+      ),
       expect: () => [
         const AuthState.loading(),
         AuthState.error(message: tException.toString()),

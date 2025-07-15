@@ -31,8 +31,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> sendOtp({required String email}) async {
-    final otp = await _authRemoteDataSource.sendOtp(email: email);
+  Future<void> sendOtp({
+    required String email,
+    required String subject,
+    required String templateId,
+  }) async {
+    final otp = await _authRemoteDataSource.sendOtp(
+      email: email,
+      subject: subject,
+      templateId: templateId,
+    );
     await _authLocalDataSource.saveOtp(otp);
   }
 

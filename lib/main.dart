@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/config/router/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'src/ds/ds.dart';
 
@@ -14,6 +15,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupInjector();
   await setupSupabase();
+  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+    final session = data.session;
+    if (session != null && data.event == AuthChangeEvent.passwordRecovery) {
+      AppRouter.router.go('/update-password');
+    }
+  });
   runApp(const MyApp());
 }
 

@@ -12,10 +12,14 @@ import 'package:go_router/go_router.dart';
 class OtpValidationPage extends StatefulWidget {
   final String email;
   final String redirectUrl;
+  final String templateId;
+  final String subject;
   const OtpValidationPage({
     super.key,
     required this.email,
     required this.redirectUrl,
+    required this.templateId,
+    required this.subject,
   });
 
   @override
@@ -33,7 +37,13 @@ class _OtpValidationPageState extends State<OtpValidationPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuthBloc>().add(AuthEvent.sendOtp(email: widget.email));
+      context.read<AuthBloc>().add(
+        AuthEvent.sendOtp(
+          email: widget.email,
+          subject: widget.subject,
+          templateId: widget.templateId,
+        ),
+      );
     });
   }
 
@@ -72,7 +82,13 @@ class _OtpValidationPageState extends State<OtpValidationPage> {
   }
 
   void _resendOtp() {
-    context.read<AuthBloc>().add(AuthEvent.sendOtp(email: widget.email));
+    context.read<AuthBloc>().add(
+      AuthEvent.sendOtp(
+        email: widget.email,
+        subject: 'Your One-Time Password',
+        templateId: 'yzkq340k16xgd796',
+      ),
+    );
   }
 
   @override

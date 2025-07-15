@@ -1,5 +1,4 @@
 import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -7,7 +6,11 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> login({required String email, required String password});
   Future<void> logout();
   Future<void> resetPassword({required String email});
-  Future<String> sendOtp({required String email});
+  Future<String> sendOtp({
+    required String email,
+    required String subject,
+    required String templateId,
+  });
   Future<void> verifyOtp({required String email, required String token});
 }
 
@@ -44,11 +47,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> sendOtp({required String email}) async {
+  Future<String> sendOtp({
+    required String email,
+    required String subject,
+    required String templateId,
+  }) async {
     try {
       final response = await _supabaseClient.functions.invoke(
         'send-otp',
-        body: {'email': email},
+        body: {'email': email, 'subject': subject, 'template_id': templateId},
       );
 
       if (response.status != 200) {
@@ -62,9 +69,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return data['otp'];
     } catch (e) {
-      if (kDebugMode) {
-        print('Error invoking OTP function: $e');
-      }
       throw Exception('Failed to send OTP: $e');
     }
   }

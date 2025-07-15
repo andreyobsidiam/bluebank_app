@@ -14,16 +14,16 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { email } = await req.json();
+    const { email, subject, template_id } = await req.json();
 
-    if (!email) {
-      return new Response(JSON.stringify({ error: 'Email is required' }), {
+    if (!email || !subject || !template_id) {
+      return new Response(JSON.stringify({ error: 'Email, subject, and template_id are required' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
       });
     }
 
-     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     const res = await fetch(MAILERSEND_API_URL, {
       method: 'POST',
@@ -34,14 +34,14 @@ Deno.serve(async (req: Request) => {
       body: JSON.stringify({
         from: { email: SENDER_EMAIL },
         to: [{ email }],
-        subject: "Your One-Time Password",
+        subject: subject,
         personalization: [
           {
             email: email,
             data: { "variable": otp }, // Ensure your template uses 'variable' or change this key
           }
         ],
-        template_id: 'yzkq340k16xgd796', // Make sure this template ID is correct
+        template_id: template_id,
       }),
     });
 

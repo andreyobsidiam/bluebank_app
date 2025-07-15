@@ -7,7 +7,15 @@ class SendOtpUseCase {
 
   SendOtpUseCase(this._authRepository);
 
-  Future<void> call({required String email}) {
-    return _authRepository.sendOtp(email: email);
+  Future<void> call({
+    required String email,
+    required String subject,
+    required String templateId,
+  }) {
+    return _authRepository.sendOtp(
+      email: email,
+      subject: subject,
+      templateId: templateId,
+    );
   }
 }

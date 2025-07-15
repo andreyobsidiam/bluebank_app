@@ -45,18 +45,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
         },
         resetPassword: (email) async {
-          emit(const AuthState.loading());
-          try {
-            await _resetPasswordUseCase(email: email);
-            emit(const AuthState.unauthenticated());
-          } catch (e) {
-            emit(AuthState.error(message: e.toString()));
-          }
+          emit(const AuthState.passwordResetLinkSent());
+
+          // emit(const AuthState.loading());
+          // try {
+          //   await _resetPasswordUseCase(email: email);
+          //   emit(const AuthState.passwordResetLinkSent());
+          // } catch (e) {
+          //   emit(AuthState.error(message: e.toString()));
+          // }
         },
-        sendOtp: (email) async {
+        sendOtp: (email, subject, templateId) async {
           emit(const AuthState.loading());
           try {
-            await _sendOtpUseCase(email: email);
+            await _sendOtpUseCase(
+              email: email,
+              subject: subject,
+              templateId: templateId,
+            );
             emit(const AuthState.otpSent());
           } catch (e) {
             emit(AuthState.error(message: e.toString()));

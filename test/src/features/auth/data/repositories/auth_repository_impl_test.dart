@@ -92,18 +92,34 @@ void main() {
   });
 
   group('sendOtp', () {
+    const tSubject = 'subject';
+    const tTemplateId = 'template_id';
     test('should get otp from remote and save it to local', () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.sendOtp(email: tEmail),
+        () => mockAuthRemoteDataSource.sendOtp(
+          email: tEmail,
+          subject: tSubject,
+          templateId: tTemplateId,
+        ),
       ).thenAnswer((_) async => tOtp);
       when(
         () => mockAuthLocalDataSource.saveOtp(tOtp),
       ).thenAnswer((_) async => {});
       // act
-      await repository.sendOtp(email: tEmail);
+      await repository.sendOtp(
+        email: tEmail,
+        subject: tSubject,
+        templateId: tTemplateId,
+      );
       // assert
-      verify(() => mockAuthRemoteDataSource.sendOtp(email: tEmail)).called(1);
+      verify(
+        () => mockAuthRemoteDataSource.sendOtp(
+          email: tEmail,
+          subject: tSubject,
+          templateId: tTemplateId,
+        ),
+      ).called(1);
       verify(() => mockAuthLocalDataSource.saveOtp(tOtp)).called(1);
       verifyNoMoreInteractions(mockAuthRemoteDataSource);
       verifyNoMoreInteractions(mockAuthLocalDataSource);
