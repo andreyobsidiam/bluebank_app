@@ -24,8 +24,16 @@ class AppRouter {
       GoRoute(
         path: '/otp-validation',
         builder: (context, state) {
-          final email = state.extra as String;
-          return OtpValidationPage(email: email);
+          final extra = state.extra;
+          if (extra is! List<String> || extra.length != 2) {
+            return Scaffold(
+              body: Center(child: Text('Invalid OTP parameters.')),
+            );
+          }
+          final email = extra[0];
+          final redirectUrl = extra[1];
+
+          return OtpValidationPage(email: email, redirectUrl: redirectUrl);
         },
       ),
     ],
@@ -43,6 +51,9 @@ class AppRouter {
                 state.matchedLocation != '/login')
           ? '/login'
           : null;
+    },
+    errorBuilder: (context, state) {
+      return Scaffold(body: Center(child: Text('Error: ${state.error}')));
     },
     // refreshListenable: GoRouterRefreshStream(
     //   Supabase.instance.client.auth.onAuthStateChange,

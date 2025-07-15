@@ -71,10 +71,7 @@ Future<_i174.GetIt> $initGetIt(
     () => _i852.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
   );
   gh.lazySingleton<_i107.AuthRemoteDataSource>(
-    () => _i107.AuthRemoteDataSourceImpl(
-      gh<_i454.SupabaseClient>(),
-      gh<_i361.Dio>(),
-    ),
+    () => _i107.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
   );
   gh.lazySingleton<_i297.PostRemoteDataSource>(
     () => _i297.PostRemoteDataSourceImpl(gh<_i357.ApiClient>()),

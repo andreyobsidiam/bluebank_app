@@ -21,7 +21,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordHint => 'Password';
 
   @override
+  String get goodMorning => 'Good Morning';
+
+  @override
   String get goodAfternoon => 'Good Afternoon';
+
+  @override
+  String get goodEvening => 'Good Evening';
 
   @override
   String get forgotPassword => 'I forgot the password';

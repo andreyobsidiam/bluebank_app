@@ -1,7 +1,10 @@
 import 'package:bluebank_app/gen/assets.gen.dart';
+import 'package:bluebank_app/src/core/common/utils/context_extensions.dart';
+import 'package:bluebank_app/src/core/common/utils/time.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/ds/atom/box.dart';
+import 'package:bluebank_app/src/ds/ds.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:bluebank_app/src/features/auth/presentation/bloc/auth_state.dart';
@@ -39,9 +42,15 @@ class _LoginPageState extends State<LoginPage> {
           state.whenOrNull(
             authenticated: (user) {
               if (kIsWeb) {
-                context.go('/otp-validation', extra: _emailController.text);
+                context.go(
+                  '/otp-validation',
+                  extra: [_emailController.text, '/'],
+                );
               } else {
-                context.push('/otp-validation', extra: _emailController.text);
+                context.push(
+                  '/otp-validation',
+                  extra: [_emailController.text, '/'],
+                );
               }
             },
             error: (message) {
@@ -117,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               flex: 8,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: context.colors.surface,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -169,6 +178,13 @@ class _LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final greeting = switch (TimeOfDayHelper.getPeriod(DateTime.now())) {
+      'morning' => l10n.goodMorning,
+      'afternoon' => l10n.goodAfternoon,
+      'evening' => l10n.goodEvening,
+      _ => l10n.goodAfternoon,
+    };
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32.0),
       child: Column(
@@ -176,7 +192,7 @@ class _LoginForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            l10n.goodAfternoon,
+            greeting,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 30),
@@ -216,7 +232,10 @@ class _LoginForm extends StatelessWidget {
               },
               child: Text(
                 l10n.forgotPassword,
-                style: const TextStyle(color: Colors.blue, fontSize: 16),
+                style: context.textTheme.bodyLarge?.copyWith(
+                  color: Colors.blue,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
@@ -226,7 +245,14 @@ class _LoginForm extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Assets.svg.faceId.svg(width: 24, height: 24),
+                  Assets.svg.faceId.svg(
+                    width: 24,
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                      context.colors.onSurface,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   DsBox.hlg,
                   Text(
                     l10n.rememberWithFaceId,

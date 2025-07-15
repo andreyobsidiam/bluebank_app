@@ -1,6 +1,5 @@
 import 'package:bluebank_app/src/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:bluebank_app/src/features/auth/data/models/user_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,23 +8,24 @@ class MockSupabaseClient extends Mock implements SupabaseClient {}
 
 class MockGoTrueClient extends Mock implements GoTrueClient {}
 
-class MockUser extends Mock implements User {}
+class MockFunctionsClient extends Mock implements FunctionsClient {}
 
-class MockDio extends Mock implements Dio {}
+class MockUser extends Mock implements User {}
 
 void main() {
   late AuthRemoteDataSourceImpl dataSource;
   late MockSupabaseClient mockSupabaseClient;
   late MockGoTrueClient mockGoTrueClient;
-  late MockDio mockDio;
+  late MockFunctionsClient mockFunctionsClient;
 
   setUp(() {
     mockSupabaseClient = MockSupabaseClient();
     mockGoTrueClient = MockGoTrueClient();
-    mockDio = MockDio();
-    dataSource = AuthRemoteDataSourceImpl(mockSupabaseClient, mockDio);
+    mockFunctionsClient = MockFunctionsClient();
+    dataSource = AuthRemoteDataSourceImpl(mockSupabaseClient);
 
     when(() => mockSupabaseClient.auth).thenReturn(mockGoTrueClient);
+    when(() => mockSupabaseClient.functions).thenReturn(mockFunctionsClient);
   });
 
   const tEmail = 'test@test.com';
@@ -97,23 +97,19 @@ void main() {
   });
 
   group('sendOtp', () {
-    test('should return otp when call to api is successful', () async {
+    const tOtp = '123456';
+    test('should return otp when call to function is successful', () async {
       // arrange
       when(
-        () => mockDio.post(
-          any(),
-          data: any(named: 'data'),
-          options: any(named: 'options'),
-        ),
+        () => mockFunctionsClient.invoke('send-otp', body: {'email': tEmail}),
       ).thenAnswer(
-        (_) async =>
-            Response(requestOptions: RequestOptions(path: ''), statusCode: 200),
+        (_) async => FunctionResponse(data: {'otp': tOtp}, status: 200),
       );
       // act
       final result = await dataSource.sendOtp(email: tEmail);
 
       // assert
-      expect(result, isA<String>());
+      expect(result, tOtp);
     });
   });
 }
