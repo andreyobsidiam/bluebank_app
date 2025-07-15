@@ -101,13 +101,19 @@ class _OtpValidationPageState extends State<OtpValidationPage> {
               context.go(widget.redirectUrl, extra: {'email': widget.email});
             },
             error: (message) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message)));
+              DsSnackBar.show(
+                context: context,
+                message: message == 'invalid_otp'
+                    ? context.l10n.invalidOtp
+                    : message,
+                icon: const Icon(Icons.error_outline, color: Colors.red),
+              );
             },
             otpSent: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.l10n.otpSentMessage)),
+              DsSnackBar.show(
+                context: context,
+                message: context.l10n.otpSentMessage,
+                icon: const Icon(Icons.email_outlined, color: Colors.green),
               );
             },
           );

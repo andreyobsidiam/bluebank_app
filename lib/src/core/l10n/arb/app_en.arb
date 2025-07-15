@@ -29,5 +29,7 @@
     "instructionsSentTo": "Instructions has been sent to",
     "instructionsToChangePassword": "Instructions to change your password has been set to your inbox. Be on the lookout for the next steps.",
     "resendInstructions": "Resend Instructions",
-    "resendInstructionsIn": "Resend Instructions ({seconds} seconds)"
+    "resendInstructionsIn": "Resend Instructions ({seconds} seconds)",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "invalidOtp": "Invalid OTP. Please try again."
 }

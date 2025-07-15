@@ -14,4 +14,5 @@ class AuthState with _$AuthState {
   const factory AuthState.passwordResetLinkSent() = _PasswordResetLinkSent;
   const factory AuthState.error({required String message}) = _Error;
   const factory AuthState.passwordUpdated() = _PasswordUpdated;
+  const factory AuthState.invalidCredentials() = _InvalidCredentials;
 }

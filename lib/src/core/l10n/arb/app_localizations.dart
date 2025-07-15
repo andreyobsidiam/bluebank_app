@@ -277,6 +277,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resend Instructions ({seconds} seconds)'**
   String resendInstructionsIn(Object seconds);
+
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid credentials. Please try again.'**
+  String get invalidCredentials;
+
+  /// No description provided for @invalidOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid OTP. Please try again.'**
+  String get invalidOtp;
 }
 
 class _AppLocalizationsDelegate

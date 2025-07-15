@@ -29,5 +29,7 @@
     "instructionsSentTo": "Se han enviado instrucciones a",
     "instructionsToChangePassword": "Se han enviado a tu bandeja de entrada las instrucciones para cambiar tu contraseña. Estate atento a los próximos pasos.",
     "resendInstructions": "Reenviar instrucciones",
-    "resendInstructionsIn": "Reenviar instrucciones en ({seconds} segundos)"
+    "resendInstructionsIn": "Reenviar instrucciones en ({seconds} segundos)",
+    "invalidCredentials": "Credenciales inválidas. Por favor, inténtalo de nuevo.",
+    "invalidOtp": "OTP inválido. Por favor, inténtalo de nuevo."
 }

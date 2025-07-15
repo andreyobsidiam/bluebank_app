@@ -35,7 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             final user = await _loginUseCase(email: email, password: password);
             emit(AuthState.authenticated(user: user));
           } catch (e) {
-            emit(AuthState.error(message: e.toString()));
+            if (e.toString().contains('invalid_credentials')) {
+              emit(const AuthState.invalidCredentials());
+            } else {
+              emit(AuthState.error(message: e.toString()));
+            }
           }
         },
         logout: () async {
@@ -76,7 +80,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await _verifyOtpUseCase(email: email, token: token);
             emit(const AuthState.otpVerified()); // User is authenticated
           } catch (e) {
-            emit(AuthState.error(message: e.toString()));
+            if (e.toString().contains('invalid_otp')) {
+              emit(const AuthState.error(message: 'invalid_otp'));
+            } else {
+              emit(AuthState.error(message: e.toString()));
+            }
           }
         },
 

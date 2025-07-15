@@ -1,6 +1,7 @@
 import 'package:bluebank_app/gen/assets.gen.dart';
 import 'package:bluebank_app/src/core/common/utils/context_extensions.dart';
 import 'package:bluebank_app/src/core/common/utils/time.dart';
+import 'package:bluebank_app/src/core/config/router/app_router.dart';
 import 'package:bluebank_app/src/core/di/injector.dart';
 import 'package:bluebank_app/src/core/l10n/arb/app_localizations.dart';
 import 'package:bluebank_app/src/ds/ds.dart';
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   '/otp-validation',
                   extra: {
                     'email': _emailController.text,
-                    'redirectUrl': '/',
+                    'redirectUrl': AppRouter.homePath,
                     'templateId': 'yzkq340k16xgd796',
                     'subject': 'Your One-Time Password',
                   },
@@ -55,12 +56,19 @@ class _LoginPageState extends State<LoginPage> {
                   '/otp-validation',
                   extra: {
                     'email': _emailController.text,
-                    'redirectUrl': '/',
+                    'redirectUrl': AppRouter.homePath,
                     'templateId': 'yzkq340k16xgd796',
                     'subject': 'Your One-Time Password',
                   },
                 );
               }
+            },
+            invalidCredentials: () {
+              DsSnackBar.show(
+                context: context,
+                icon: const Icon(Icons.error_outline, color: Colors.red),
+                message: AppLocalizations.of(context)!.invalidCredentials,
+              );
             },
             error: (message) {
               ScaffoldMessenger.of(

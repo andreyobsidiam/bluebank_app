@@ -102,4 +102,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String resendInstructionsIn(Object seconds) {
     return 'Resend Instructions ($seconds seconds)';
   }
+
+  @override
+  String get invalidCredentials => 'Invalid credentials. Please try again.';
+
+  @override
+  String get invalidOtp => 'Invalid OTP. Please try again.';
 }

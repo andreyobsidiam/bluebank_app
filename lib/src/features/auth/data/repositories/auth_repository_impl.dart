@@ -48,7 +48,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> verifyOtp({required String token}) async {
     final isVerified = await _authLocalDataSource.verifyOtp(token: token);
     if (!isVerified) {
-      throw Exception('Invalid OTP');
+      throw Exception('invalid_otp');
     }
   }
 

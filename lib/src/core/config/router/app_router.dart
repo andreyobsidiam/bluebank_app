@@ -7,14 +7,17 @@ import 'package:bluebank_app/src/features/auth/presentation/pages/update_passwor
 import 'package:bluebank_app/src/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/otp_validation_page.dart';
 import 'package:bluebank_app/src/features/auth/presentation/pages/password_reset_email_sent_page.dart';
+import 'package:bluebank_app/src/features/home/presentation/pages/home_page.dart';
 import 'package:bluebank_app/src/features/localization/presentation/pages/language_selection_page.dart';
 import 'package:bluebank_app/src/features/post/presentation/pages/post_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppRouter {
   static const String welcomePath = '/welcome';
-  static const String postPath = '/home';
+  static const String homePath = '/home';
+  static const String postPath = '/post';
   static const String loginPath = '/login';
   static const String forgotPasswordPath = '/forgot-password';
   static const String updatePasswordPath = '/update-password';
@@ -36,6 +39,14 @@ class AppRouter {
         );
         return AppRouter.forgotPasswordPath;
       }
+
+      // Verify Supabase session
+      final supabase = Supabase.instance.client;
+      final session = supabase.auth.currentSession;
+      if (session != null) {
+        return AppRouter.homePath;
+      }
+
       return null;
     },
     routes: [
@@ -43,6 +54,7 @@ class AppRouter {
         path: welcomePath,
         builder: (context, state) => const LanguageSelectionPage(),
       ),
+      GoRoute(path: homePath, builder: (context, state) => const HomePage()),
       GoRoute(path: postPath, builder: (context, state) => const PostPage()),
       GoRoute(path: loginPath, builder: (context, state) => const LoginPage()),
       GoRoute(
